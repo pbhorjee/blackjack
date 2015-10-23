@@ -10,6 +10,9 @@ class window.Hand extends Backbone.Collection
 
     @last()
 
+  stand: ->
+    @trigger 'stand'
+
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
   , 0

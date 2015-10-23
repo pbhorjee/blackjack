@@ -5,5 +5,40 @@ class window.App extends Backbone.Model
     @set 'deck', deck = new Deck()
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
+    @set 'winner', null
 
-    
+    @get 'playerHand' 
+    .on 'stand', () ->
+      console.log 'stand'
+      ## while dealerhand score <= 17
+      while @get 'dealerHand' 
+        .scores()[0] <= 17 
+          @get 'dealerHand'
+          .hit()
+      if not @get 'winner'
+        @findWinner()
+    , @
+
+    @get 'playerHand' 
+    .on 'bust', () -> 
+      console.log "dealer wins"
+      @set 'winner', "player"
+      @trigger 'win', @get 'dealerHand'
+    , @
+
+    @get 'dealerHand' 
+    .on 'bust', () -> 
+      console.log "player wins"
+      @set 'winner', "dealer"
+      @trigger 'win', @get 'playerHand' 
+    , @
+
+  findWinner: ->
+    if @get 'playerHand' 
+      .scores()[0] >= @get 'dealerHand' 
+      .scores()[0]
+        console.log "player wins"
+        @trigger 'win', @get 'playerHand'
+    else
+      console.log "dealer wins"
+      @trigger 'win', @get 'dealerHand'  
