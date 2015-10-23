@@ -11,6 +11,7 @@ class window.AppView extends Backbone.View
 
   initialize: ->
     @render()
+    @model.get('playerHand').on 'bust', => @disableHitButton()
 
   render: ->
     @$el.children().detach()
@@ -18,3 +19,5 @@ class window.AppView extends Backbone.View
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
 
+  disableHitButton: ->
+    @$el.find('.hit-button').prop('disabled', true)
