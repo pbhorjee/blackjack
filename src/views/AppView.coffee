@@ -1,6 +1,7 @@
 class window.AppView extends Backbone.View
   template: _.template '
     <button class="hit-button">Hit</button> <button class="stand-button">Stand</button>
+    <div class="outcome"></div>
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
   '
@@ -12,6 +13,10 @@ class window.AppView extends Backbone.View
   initialize: ->
     @render()
     @model.get('playerHand').on 'bust', => @disableHitButton()
+    @model.on 'win', (win) -> 
+      console.log "view gets win event"
+      @$('.outcome').html win
+    , @
 
   render: ->
     @$el.children().detach()

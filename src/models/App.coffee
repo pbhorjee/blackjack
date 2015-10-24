@@ -10,6 +10,8 @@ class window.App extends Backbone.Model
     @get 'playerHand' 
     .on 'stand', () ->
       console.log 'stand'
+      @get 'dealerHand' 
+      .at(0).flip()
       ## while dealerhand score <= 17
       while @get 'dealerHand' 
         .scores()[0] <= 17 
@@ -22,15 +24,15 @@ class window.App extends Backbone.Model
     @get 'playerHand' 
     .on 'bust', () -> 
       console.log "dealer wins"
-      @set 'winner', "player"
-      @trigger 'win', @get 'dealerHand'
+      @set 'winner', true
+      @trigger 'win', "Dealer"
     , @
 
     @get 'dealerHand' 
     .on 'bust', () -> 
       console.log "player wins"
-      @set 'winner', "dealer"
-      @trigger 'win', @get 'playerHand' 
+      @set 'winner', true
+      @trigger 'win', "Player"
     , @
 
   findWinner: ->
@@ -38,7 +40,7 @@ class window.App extends Backbone.Model
       .scores()[0] >= @get 'dealerHand' 
       .scores()[0]
         console.log "player wins"
-        @trigger 'win', @get 'playerHand'
+        @trigger 'win', 'Player'
     else
       console.log "dealer wins"
-      @trigger 'win', @get 'dealerHand'  
+      @trigger 'win', 'Dealer'
